@@ -8,14 +8,14 @@ import org.firstinspires.ftc.teamcode.commands.DriveCommands.KindaSlowDriveForwa
 import org.firstinspires.ftc.teamcode.commands.DriveCommands.TurnToCommand;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
 import org.firstinspires.ftc.teamcode.subsystems.WobbleGoal;
-import org.firstinspires.ftc.teamcode.subsystems.Carousel;
+import org.firstinspires.ftc.teamcode.subsystems.Camera;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.SensorColor;
 
 public class YBlueCarouselCommand extends SequentialCommandGroup {
-    public YBlueCarouselCommand(Drivetrain drivetrain, Intake intake, Shooter lift, ShooterFlipper shooterFlipper, Carousel carousel, SensorColor sensorColor, WobbleGoal wobbleGoal) {
+    public YBlueCarouselCommand(Drivetrain drivetrain, Intake intake, Shooter lift, ShooterFlipper shooterFlipper, Camera camera, SensorColor sensorColor, WobbleGoal wobbleGoal) {
 
         addCommands(
                 new DriveForwardCommand(drivetrain,10),
@@ -25,7 +25,7 @@ public class YBlueCarouselCommand extends SequentialCommandGroup {
 
                 new DriveForwardCommand(drivetrain, 3),
                 new KindaSlowDriveForwardCommand(drivetrain, 4),
-                new LeftCarouselCommand(carousel, drivetrain),
+                new LeftCarouselCommand(camera, drivetrain),
 
                 new TurnToCommand(drivetrain, 0, true),
                 new DriveForwardCommand(drivetrain, 33)

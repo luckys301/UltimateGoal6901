@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.autons.lmchamp.red.Carousel;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.Command;
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SelectCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -18,7 +17,7 @@ import org.firstinspires.ftc.teamcode.driveTrain.SampleTankDrive;
 import org.firstinspires.ftc.teamcode.pipelines.TeamMarkerPipeline;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
 import org.firstinspires.ftc.teamcode.subsystems.WobbleGoal;
-import org.firstinspires.ftc.teamcode.subsystems.Carousel;
+import org.firstinspires.ftc.teamcode.subsystems.Camera;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Shooter;
@@ -52,7 +51,7 @@ public class CRedCarouselAuton extends MatchOpMode {
     private Shooter lift;
     private Vision vision;
     private ShooterFlipper shooterFlipper;
-    private Carousel carousel;
+    private Camera camera;
     private SensorColor sensorColor;
     private WobbleGoal wobbleGoal;
 
@@ -63,7 +62,7 @@ public class CRedCarouselAuton extends MatchOpMode {
         intake = new Intake(intakeMotor, intakeServo, telemetry, hardwareMap);
         lift = new Shooter(liftMotor, liftMotor, telemetry, hardwareMap);
         shooterFlipper = new ShooterFlipper(armServo, dropServo, telemetry, hardwareMap);
-        carousel = new Carousel(hardwareMap, telemetry);
+        camera = new Camera(hardwareMap, telemetry);
         wobbleGoal = new WobbleGoal(clawServo, capArmServo, realCapArmServo, telemetry, hardwareMap);
 
         sensorColor = new SensorColor(hardwareMap, telemetry, "colorSensor");
@@ -83,21 +82,21 @@ public class CRedCarouselAuton extends MatchOpMode {
                 new SelectCommand(new HashMap<Object, Command>() {{
                     put(TeamMarkerPipeline.Position.LEFT, new SequentialCommandGroup(
                             //Low
-                            new YRedCarouselCommand(drivetrain, intake, lift, shooterFlipper, carousel, sensorColor, wobbleGoal),
-                            new InstantCommand(wobbleGoal::autoLow),
-                            new YRedCarouselEndCommand(drivetrain, intake, lift, shooterFlipper, carousel, sensorColor, wobbleGoal)
+                            new YRedCarouselCommand(drivetrain, intake, lift, shooterFlipper, camera, sensorColor, wobbleGoal),
+//                            new InstantCommand(wobbleGoal::autoLow),
+                            new YRedCarouselEndCommand(drivetrain, intake, lift, shooterFlipper, camera, sensorColor, wobbleGoal)
                     ));
                     put(TeamMarkerPipeline.Position.MIDDLE, new SequentialCommandGroup(
                             //Mid
-                            new YRedCarouselCommand(drivetrain, intake, lift, shooterFlipper, carousel, sensorColor, wobbleGoal),
-                            new InstantCommand(wobbleGoal::autoMid),
-                            new YRedCarouselEndCommand(drivetrain, intake, lift, shooterFlipper, carousel, sensorColor, wobbleGoal)
+                            new YRedCarouselCommand(drivetrain, intake, lift, shooterFlipper, camera, sensorColor, wobbleGoal),
+//                            new InstantCommand(wobbleGoal::autoMid),
+                            new YRedCarouselEndCommand(drivetrain, intake, lift, shooterFlipper, camera, sensorColor, wobbleGoal)
                     ));
                     put(TeamMarkerPipeline.Position.RIGHT, new SequentialCommandGroup(
                             //High
-                            new YRedCarouselCommand(drivetrain, intake, lift, shooterFlipper, carousel, sensorColor, wobbleGoal),
-                            new InstantCommand(wobbleGoal::autoHigh),
-                            new YRedCarouselEndCommand(drivetrain, intake, lift, shooterFlipper, carousel, sensorColor, wobbleGoal)
+                            new YRedCarouselCommand(drivetrain, intake, lift, shooterFlipper, camera, sensorColor, wobbleGoal),
+//                            new InstantCommand(wobbleGoal::autoHigh),
+                            new YRedCarouselEndCommand(drivetrain, intake, lift, shooterFlipper, camera, sensorColor, wobbleGoal)
                     ));
                 }}, vision::getCurrentPosition)
         );

@@ -11,14 +11,14 @@ import org.firstinspires.ftc.teamcode.Util;
 import java.util.logging.Level;
 
 @Config
-public class Carousel extends SubsystemBase {
+public class Camera extends SubsystemBase {
     public static double CAROUSEL_LEFT_POWER = -1;
     public static double CAROUSEL_RIGHT_POWER = 1;
 
     Telemetry telemetry;
     private CRServo carouselServo;
 
-    public Carousel(HardwareMap hw, Telemetry tl) {
+    public Camera(HardwareMap hw, Telemetry tl) {
         this.carouselServo = new CRServo(hw, "duckServo");
         this.telemetry = tl;
         carouselServo.setInverted(true);

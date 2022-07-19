@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.driveTrain.MatchOpMode;
 import org.firstinspires.ftc.teamcode.driveTrain.SampleTankDrive;
 import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
 import org.firstinspires.ftc.teamcode.subsystems.WobbleGoal;
-import org.firstinspires.ftc.teamcode.subsystems.Carousel;
+import org.firstinspires.ftc.teamcode.subsystems.Camera;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Shooter;
@@ -40,7 +40,7 @@ private Drivetrain drivetrain;
 private Intake intake;
 private Shooter lift;
 private ShooterFlipper shooterFlipper;
-private Carousel carousel;
+private Camera camera;
 private WobbleGoal wobbleGoal;
 private SensorColor sensorColor;
 
@@ -51,7 +51,7 @@ public void robotInit() {
     intake = new Intake(intakeMotor, intakeServo, telemetry, hardwareMap);
     lift = new Shooter(liftMotor, liftMotor, telemetry, hardwareMap);
     shooterFlipper = new ShooterFlipper(armServo, dropServo, telemetry, hardwareMap);
-    carousel = new Carousel(hardwareMap, telemetry);
+    camera = new Camera(hardwareMap, telemetry);
     wobbleGoal = new WobbleGoal(clawServo, capArmServo, realCapArmServo, telemetry, hardwareMap);
     liftMotor = new MotorEx(hardwareMap, "lift");
     sensorColor = new SensorColor(hardwareMap, telemetry, "colorSensor");
@@ -60,7 +60,7 @@ public void robotInit() {
 public void matchStart()
     {
         schedule(new SequentialCommandGroup(
-                new YBlueCarouselCommand(drivetrain, intake, lift, shooterFlipper, carousel, sensorColor, wobbleGoal))
+                new YBlueCarouselCommand(drivetrain, intake, lift, shooterFlipper, camera, sensorColor, wobbleGoal))
 //        new YRedCarouselCommand(drivetrain, intake, lift, armServos, carousel, sensorColor, capServos))
 
 //                //High

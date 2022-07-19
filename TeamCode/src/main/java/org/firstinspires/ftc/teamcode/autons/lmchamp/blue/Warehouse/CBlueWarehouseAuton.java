@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.autons.lmchamp.blue.Warehouse;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.command.Command;
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SelectCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -18,13 +17,13 @@ import org.firstinspires.ftc.teamcode.commands.DriveCommands.SplineCommand;
 import org.firstinspires.ftc.teamcode.driveTrain.MatchOpMode;
 import org.firstinspires.ftc.teamcode.driveTrain.SampleTankDrive;
 import org.firstinspires.ftc.teamcode.pipelines.TeamMarkerPipeline;
-import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
-import org.firstinspires.ftc.teamcode.subsystems.WobbleGoal;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.SensorColor;
+import org.firstinspires.ftc.teamcode.subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
 import org.firstinspires.ftc.teamcode.subsystems.Vision;
+import org.firstinspires.ftc.teamcode.subsystems.WobbleGoal;
 
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -87,19 +86,19 @@ public class CBlueWarehouseAuton extends MatchOpMode {
                 new SelectCommand(new HashMap<Object, Command>() {{
                     put(TeamMarkerPipeline.Position.LEFT, new SequentialCommandGroup(
                             //Low
-                            new InstantCommand(wobbleGoal::autoLow),
+//                            new InstantCommand(wobbleGoal::autoLow),
                             new SplineCommand(drivetrain, new Vector2d(22,   -18.5), Math.toRadians(360)),
                             new CBlueWarehouseCommand(drivetrain, intake, lift, shooterFlipper, sensorColor, wobbleGoal))
                     );
                     put(TeamMarkerPipeline.Position.MIDDLE, new SequentialCommandGroup(
                             //Mid
-                            new InstantCommand(wobbleGoal::autoMid),
+//                            new InstantCommand(wobbleGoal::autoMid),
                             new SplineCommand(drivetrain, new Vector2d(22.5, -19), Math.toRadians(0)),
                             new CBlueWarehouseCommand(drivetrain, intake, lift, shooterFlipper, sensorColor, wobbleGoal))
                     );
                     put(TeamMarkerPipeline.Position.RIGHT, new SequentialCommandGroup(
                             //High
-                            new InstantCommand(wobbleGoal::autoHigh),
+//                            new InstantCommand(wobbleGoal::autoHigh),
                             new SplineCommand(drivetrain, new Vector2d(22.5,   -18.5), Math.toRadians(0)),
                             new CBlueWarehouseCommand(drivetrain, intake, lift, shooterFlipper, sensorColor, wobbleGoal))
                     );

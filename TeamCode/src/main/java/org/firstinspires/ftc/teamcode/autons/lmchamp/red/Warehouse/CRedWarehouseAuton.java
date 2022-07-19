@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.autons.lmchamp.red.Warehouse;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.command.Command;
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SelectCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -18,14 +17,14 @@ import org.firstinspires.ftc.teamcode.commands.DriveCommands.SplineCommand;
 import org.firstinspires.ftc.teamcode.driveTrain.MatchOpMode;
 import org.firstinspires.ftc.teamcode.driveTrain.SampleTankDrive;
 import org.firstinspires.ftc.teamcode.pipelines.TeamMarkerPipeline;
-import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
-import org.firstinspires.ftc.teamcode.subsystems.WobbleGoal;
-import org.firstinspires.ftc.teamcode.subsystems.Carousel;
+import org.firstinspires.ftc.teamcode.subsystems.Camera;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.SensorColor;
+import org.firstinspires.ftc.teamcode.subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
 import org.firstinspires.ftc.teamcode.subsystems.Vision;
+import org.firstinspires.ftc.teamcode.subsystems.WobbleGoal;
 
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -55,7 +54,7 @@ private Intake intake;
 private Shooter lift;
 private Vision vision;
 private ShooterFlipper shooterFlipper;
-private Carousel carousel;
+private Camera camera;
 private SensorColor sensorColor;
 private WobbleGoal wobbleGoal;
 
@@ -67,7 +66,7 @@ private WobbleGoal wobbleGoal;
         intake = new Intake(intakeMotor, intakeServo, telemetry, hardwareMap);
         lift = new Shooter(liftMotor, liftMotor, telemetry, hardwareMap);
         shooterFlipper = new ShooterFlipper(armServo, dropServo, telemetry, hardwareMap);
-        carousel = new Carousel(hardwareMap, telemetry);
+        camera = new Camera(hardwareMap, telemetry);
         wobbleGoal = new WobbleGoal(clawServo, capArmServo, realCapArmServo, telemetry, hardwareMap);
 
         sensorColor = new SensorColor(hardwareMap, telemetry, "colorSensor");
@@ -87,19 +86,19 @@ public void matchStart() {
             new SelectCommand(new HashMap<Object, Command>() {{
                 put(TeamMarkerPipeline.Position.LEFT, new SequentialCommandGroup(
                         //Low
-                        new InstantCommand(wobbleGoal::autoLow),
+//                        new InstantCommand(wobbleGoal::autoLow),
                         new SplineCommand(drivetrain, new Vector2d(21.5,25.8), Math.toRadians(47)),
                         new CRedWarehouseCommand(drivetrain, intake, lift, shooterFlipper, sensorColor, wobbleGoal))
                 );
                 put(TeamMarkerPipeline.Position.MIDDLE, new SequentialCommandGroup(
                         //Mid
-                        new InstantCommand(wobbleGoal::autoMid),
+//                        new InstantCommand(wobbleGoal::autoMid),
                         new SplineCommand(drivetrain, new Vector2d(22.8,27.5), Math.toRadians(13)),
                         new CRedWarehouseCommand(drivetrain, intake, lift, shooterFlipper, sensorColor, wobbleGoal))
                 );
                 put(TeamMarkerPipeline.Position.RIGHT, new SequentialCommandGroup(
                         //High
-                        new InstantCommand(wobbleGoal::autoHigh),
+//                        new InstantCommand(wobbleGoal::autoHigh),
                         new SplineCommand(drivetrain, new Vector2d(23.5,26), Math.toRadians(10)),
                         new CRedWarehouseCommand(drivetrain, intake, lift, shooterFlipper, sensorColor, wobbleGoal))
                 );
