@@ -18,8 +18,7 @@ public class IntakeCommand extends SequentialCommandGroup {
                 new InstantCommand(intake::stop),
                 new InstantCommand(intake::outtake, intake),
                 new WaitCommand(500),
-                new InstantCommand(intake::stop, intake),
-                new InstantCommand(intake::servoUp,intake)
+                new InstantCommand(intake::stop, intake)
 
         );
     }

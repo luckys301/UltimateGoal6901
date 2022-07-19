@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.commands.CarouselCommand;
 
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
@@ -15,10 +14,8 @@ public class RightCarouselCommand extends SequentialCommandGroup{
 
     public RightCarouselCommand(Camera camera, Drivetrain drivetrain){
         addCommands(
-                new InstantCommand(camera::carouselRight, camera),
                 new SlowestDriveForwardCommand(drivetrain, 10),
-                new WaitCommand(3000),
-                new InstantCommand(camera::stop, camera)
+                new WaitCommand(3000)
         );
     }
 }

@@ -103,12 +103,12 @@ public class SharedTeleOp extends MatchOpMode {
 
 
 
-        liftManualUpButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.DPAD_RIGHT)     //Manual Lift Up
-                .whenPressed(lift::liftManual)
-                .whenReleased(lift::stopMotor));
-        liftManualDownButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.DPAD_LEFT)    //Manual Lift Down
-                .whenPressed(lift::lowerLiftManual)
-                .whenReleased(lift::stopMotor));
+//        liftManualUpButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.DPAD_RIGHT)     //Manual Lift Up
+//                .whenPressed(lift::liftManual)
+//                .whenReleased(lift::stopMotor));
+//        liftManualDownButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.DPAD_LEFT)    //Manual Lift Down
+//                .whenPressed(lift::lowerLiftManual)
+//                .whenReleased(lift::stopMotor));
 
         slideResetButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.BACK))    //Reset encoders (hopefully)
                 .whenPressed(lift::reset);
@@ -133,12 +133,12 @@ public class SharedTeleOp extends MatchOpMode {
 //                .whenPressed(new HalfDropCommandT(shooterFlipper));
 
 
-        carouselLeftTrigger = (new GamepadTrigger(operatorGamepad, GamepadKeys.Trigger.RIGHT_TRIGGER)   //Carousel Left
-                .whileHeld(camera::carouselLeft)
-                .whenReleased(camera::stop));
-        carouselRightTrigger = (new GamepadTrigger(operatorGamepad, GamepadKeys.Trigger.LEFT_TRIGGER)   //Carousel Right
-                .whileHeld(camera::carouselRight)
-                .whenReleased(camera::stop));
+//        carouselLeftTrigger = (new GamepadTrigger(operatorGamepad, GamepadKeys.Trigger.RIGHT_TRIGGER)   //Carousel Left
+//                .whileHeld(camera::carouselLeft)
+//                .whenReleased(camera::stop));
+//        carouselRightTrigger = (new GamepadTrigger(operatorGamepad, GamepadKeys.Trigger.LEFT_TRIGGER)   //Carousel Right
+//                .whileHeld(camera::carouselRight)
+//                .whenReleased(camera::stop));
 
 
 
