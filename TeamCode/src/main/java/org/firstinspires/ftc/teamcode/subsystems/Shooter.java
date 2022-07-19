@@ -37,24 +37,16 @@ public class Shooter extends SubsystemBase {
     public static int SHARED_HIGH_POSITION = -1400;
     public static int AUTO_HIGH_POSITION = -1600;
     public static int HIGH_POSITION = -1550;
-
-
     private int liftPosition = 0;
 
     public Shooter(MotorEx liftMotor, MotorEx liftMotor2, Telemetry tl, HardwareMap hw) {
         this.liftMotor = liftMotor;
-        this.liftMotor = new MotorEx(hw, "lift");
+        this.liftMotor = new MotorEx(hw, "shooter");
 
         this.liftMotor.setInverted(true);   //Reverse lift motor
         this.liftMotor.resetEncoder();
         this.liftMotor.setDistancePerPulse(360 / CPR);
 
-
-        this.liftMotor2 = liftMotor2;
-        this.liftMotor2 = new MotorEx(hw, "lift2");
-        //this.liftMotor2.setInverted(true); (This motor doesn't need inversion)
-        this.liftMotor2.resetEncoder();
-        this.liftMotor2.setDistancePerPulse(360 / CPR);
 
         controller = new PIDFController(pidfCoefficients.p, pidfCoefficients.i, pidfCoefficients.d, pidfCoefficients.f, getAngle(), getAngle());
         controller.setTolerance(10);
@@ -88,43 +80,41 @@ public class Shooter extends SubsystemBase {
 
     private double getEncoderDistance() { return liftMotor.getDistance() - encoderOffset; }
 
-    private double getEncoderDistance2(){
-        return liftMotor2.getDistance() -encoderOffset2;
-    }
+//    private double getEncoderDistance2(){
+//        return liftMotor2.getDistance() -encoderOffset2;
+//    }
 
     /****************************************************************************************/
-//    Lift Manual Functions
-    public void liftManual() {
-        automatic = false;
-        liftMotor.set(UP_SPEED);
-        liftMotor2.set(UP_SPEED);
-    }
+////    Lift Manual Functions
+//    public void liftManual() {
+//        automatic = false;
+//        liftMotor.set(UP_SPEED);
+//        liftMotor2.set(UP_SPEED);
+//    }
+//
+//    public void lowerLiftManual() {
+//        automatic = false;
+//        liftMotor.set(DOWN_SPEED);
+//        liftMotor2.set(DOWN_SPEED);
+//    }
 
-    public void lowerLiftManual() {
-        automatic = false;
-        liftMotor.set(DOWN_SPEED);
-        liftMotor2.set(DOWN_SPEED);
-    }
-
-    public void stopLift() {
+    public void stopMotor() {
         liftMotor.stopMotor();
         controller.setSetPoint(getAngle());
-        liftMotor2.stopMotor();
         automatic = false;
     }
 
-    public void setAutomatic(boolean auto) {
-        this.automatic = auto;
-    }
     public void resetEncoder() {
         liftEncoderReset();
     }
-
+    public void setAutomatic(boolean auto) {
+        this.automatic = auto;
+    }
     public double getAngle() {
         return getEncoderDistance();
     }
 
-    public double getAngle2(){ return getEncoderDistance2(); }
+//    public double getAngle2(){ return getEncoderDistance2(); }
 
     /****************************************************************************************/
 

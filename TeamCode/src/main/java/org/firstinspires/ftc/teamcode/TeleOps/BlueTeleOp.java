@@ -104,10 +104,10 @@ public class BlueTeleOp extends MatchOpMode {
 
         liftManualUpButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.DPAD_RIGHT)     //Manual Lift Up
                 .whenPressed(lift::liftManual)
-                .whenReleased(lift::stopLift));
+                .whenReleased(lift::stopMotor));
         liftManualDownButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.DPAD_LEFT)    //Manual Lift Down
                 .whenPressed(lift::lowerLiftManual)
-                .whenReleased(lift::stopLift));
+                .whenReleased(lift::stopMotor));
 
         slideResetButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.BACK))    //Reset encoders (hopefully)
                 .whenPressed(lift::reset);
