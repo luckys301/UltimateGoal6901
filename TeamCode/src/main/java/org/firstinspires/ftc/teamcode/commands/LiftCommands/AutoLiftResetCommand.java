@@ -2,17 +2,16 @@ package org.firstinspires.ftc.teamcode.commands.LiftCommands;
 
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.WaitCommand;
 
-import org.firstinspires.ftc.teamcode.subsystems.ArmServos;
-import org.firstinspires.ftc.teamcode.subsystems.Lift;
+import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
+import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 
 public class AutoLiftResetCommand extends SequentialCommandGroup {
-        public AutoLiftResetCommand(ArmServos armServos, Lift lift){
+        public AutoLiftResetCommand(ShooterFlipper shooterFlipper, Shooter lift){
         addCommands(
                 new InstantCommand(lift::liftResting, lift),
-                new InstantCommand(armServos::armHome, armServos),
-                new InstantCommand(armServos::boxOpen, armServos)
+                new InstantCommand(shooterFlipper::armHome, shooterFlipper),
+                new InstantCommand(shooterFlipper::boxOpen, shooterFlipper)
 
         );
     }

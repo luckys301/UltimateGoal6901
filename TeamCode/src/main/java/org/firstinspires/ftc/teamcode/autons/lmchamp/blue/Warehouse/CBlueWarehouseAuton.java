@@ -18,11 +18,11 @@ import org.firstinspires.ftc.teamcode.commands.DriveCommands.SplineCommand;
 import org.firstinspires.ftc.teamcode.driveTrain.MatchOpMode;
 import org.firstinspires.ftc.teamcode.driveTrain.SampleTankDrive;
 import org.firstinspires.ftc.teamcode.pipelines.TeamMarkerPipeline;
-import org.firstinspires.ftc.teamcode.subsystems.ArmServos;
-import org.firstinspires.ftc.teamcode.subsystems.CapServos;
+import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
+import org.firstinspires.ftc.teamcode.subsystems.WobbleGoal;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.Lift;
+import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.SensorColor;
 import org.firstinspires.ftc.teamcode.subsystems.Vision;
 
@@ -51,12 +51,12 @@ public class CBlueWarehouseAuton extends MatchOpMode {
     // Subsystems
     private Drivetrain drivetrain;
     private Intake intake;
-    private Lift lift;
+    private Shooter lift;
     private Vision vision;
-    private ArmServos armServos;
+    private ShooterFlipper shooterFlipper;
     //private Carousel carousel;
     private SensorColor sensorColor;
-    private CapServos capServos;
+    private WobbleGoal wobbleGoal;
 
 
     @Override
@@ -65,10 +65,10 @@ public class CBlueWarehouseAuton extends MatchOpMode {
         drivetrain = new Drivetrain(new SampleTankDrive(hardwareMap), telemetry);
         drivetrain.init();
         intake = new Intake(intakeMotor, intakeServo, telemetry, hardwareMap);
-        lift = new Lift(liftMotor, liftMotor, telemetry, hardwareMap);
-        armServos = new ArmServos(armServo, dropServo, telemetry, hardwareMap);
+        lift = new Shooter(liftMotor, liftMotor, telemetry, hardwareMap);
+        shooterFlipper = new ShooterFlipper(armServo, dropServo, telemetry, hardwareMap);
         //carousel = new Carousel(hardwareMap, telemetry);
-        capServos = new CapServos(clawServo, capArmServo, realCapArmServo, telemetry, hardwareMap);
+        wobbleGoal = new WobbleGoal(clawServo, capArmServo, realCapArmServo, telemetry, hardwareMap);
 
         sensorColor = new SensorColor(hardwareMap, telemetry, "colorSensor");
         vision = new Vision(hardwareMap, "Webcam 1", telemetry);
@@ -87,21 +87,21 @@ public class CBlueWarehouseAuton extends MatchOpMode {
                 new SelectCommand(new HashMap<Object, Command>() {{
                     put(TeamMarkerPipeline.Position.LEFT, new SequentialCommandGroup(
                             //Low
-                            new InstantCommand(capServos::autoLow),
+                            new InstantCommand(wobbleGoal::autoLow),
                             new SplineCommand(drivetrain, new Vector2d(22,   -18.5), Math.toRadians(360)),
-                            new CBlueWarehouseCommand(drivetrain, intake, lift, armServos, sensorColor, capServos))
+                            new CBlueWarehouseCommand(drivetrain, intake, lift, shooterFlipper, sensorColor, wobbleGoal))
                     );
                     put(TeamMarkerPipeline.Position.MIDDLE, new SequentialCommandGroup(
                             //Mid
-                            new InstantCommand(capServos::autoMid),
+                            new InstantCommand(wobbleGoal::autoMid),
                             new SplineCommand(drivetrain, new Vector2d(22.5, -19), Math.toRadians(0)),
-                            new CBlueWarehouseCommand(drivetrain, intake, lift, armServos, sensorColor, capServos))
+                            new CBlueWarehouseCommand(drivetrain, intake, lift, shooterFlipper, sensorColor, wobbleGoal))
                     );
                     put(TeamMarkerPipeline.Position.RIGHT, new SequentialCommandGroup(
                             //High
-                            new InstantCommand(capServos::autoHigh),
+                            new InstantCommand(wobbleGoal::autoHigh),
                             new SplineCommand(drivetrain, new Vector2d(22.5,   -18.5), Math.toRadians(0)),
-                            new CBlueWarehouseCommand(drivetrain, intake, lift, armServos, sensorColor, capServos))
+                            new CBlueWarehouseCommand(drivetrain, intake, lift, shooterFlipper, sensorColor, wobbleGoal))
                     );
                 }}, vision::getCurrentPosition)
         );

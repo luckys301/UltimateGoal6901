@@ -17,11 +17,11 @@ import org.firstinspires.ftc.teamcode.Util;
 import org.firstinspires.ftc.teamcode.driveTrain.MatchOpMode;
 import org.firstinspires.ftc.teamcode.driveTrain.SampleTankDrive;
 import org.firstinspires.ftc.teamcode.pipelines.TeamMarkerPipeline;
-import org.firstinspires.ftc.teamcode.subsystems.ArmServos;
+import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
 import org.firstinspires.ftc.teamcode.subsystems.Carousel;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.Lift;
+import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.Vision;
 
 import java.util.HashMap;
@@ -47,9 +47,9 @@ private GamepadEx driverGamepad;
 // Subsystems
 private Drivetrain drivetrain;
 private Intake intake;
-private Lift lift;
+private Shooter lift;
 private Vision vision;
-private ArmServos armServos;
+private ShooterFlipper shooterFlipper;
 private Carousel carousel;
 
 @Override
@@ -82,13 +82,13 @@ public void matchStart() {
     schedule(
             new SelectCommand(new HashMap<Object, Command>() {{
                 put(TeamMarkerPipeline.Position.LEFT, new SequentialCommandGroup(
-                        new BlueCarouselCommandL(drivetrain, intake, lift, armServos, carousel))
+                        new BlueCarouselCommandL(drivetrain, intake, lift, shooterFlipper, carousel))
                 );
                 put(TeamMarkerPipeline.Position.MIDDLE, new SequentialCommandGroup(
-                        new BlueCarouselCommandC(drivetrain, intake, lift, armServos, carousel))
+                        new BlueCarouselCommandC(drivetrain, intake, lift, shooterFlipper, carousel))
                 );
                 put(TeamMarkerPipeline.Position.RIGHT, new SequentialCommandGroup(
-                        new BlueCarouselCommandR(drivetrain, intake, lift, armServos, carousel))
+                        new BlueCarouselCommandR(drivetrain, intake, lift, shooterFlipper, carousel))
                 );
             }}, vision::getCurrentPosition)
     );

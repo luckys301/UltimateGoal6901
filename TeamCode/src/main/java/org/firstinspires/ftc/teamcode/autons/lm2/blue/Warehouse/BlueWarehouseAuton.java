@@ -17,11 +17,11 @@ import org.firstinspires.ftc.teamcode.Util;
 import org.firstinspires.ftc.teamcode.driveTrain.MatchOpMode;
 import org.firstinspires.ftc.teamcode.driveTrain.SampleTankDrive;
 import org.firstinspires.ftc.teamcode.pipelines.TeamMarkerPipeline;
-import org.firstinspires.ftc.teamcode.subsystems.ArmServos;
+import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
 import org.firstinspires.ftc.teamcode.subsystems.Carousel;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.Lift;
+import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.Vision;
 
 import java.util.HashMap;
@@ -47,9 +47,9 @@ private GamepadEx driverGamepad;
 // Subsystems
 private Drivetrain drivetrain;
 private Intake intake;
-private Lift lift;
+private Shooter lift;
 private Vision vision;
-private ArmServos armServos;
+private ShooterFlipper shooterFlipper;
 private Carousel carousel;
 
 @Override
@@ -69,7 +69,7 @@ public void robotInit() {
     drivetrain.setPoseEstimate(new Pose2d(startPoseX, startPoseY, Math.toRadians(startPoseHeading)));
     intake = new Intake(intakeMotor, intakeServo, telemetry, hardwareMap);
     //lift = new Lift(liftMotor, liftMotor2, telemetry, hardwareMap);
-    lift = new Lift(liftMotor, liftMotor2, telemetry, hardwareMap);
+    lift = new Shooter(liftMotor, liftMotor2, telemetry, hardwareMap);
     //armServos = new ArmServos(armServo, dropServo, telemetry, hw);
 }
 
@@ -84,13 +84,13 @@ public void matchStart() {
     schedule(
             new SelectCommand(new HashMap<Object, Command>() {{
                 put(TeamMarkerPipeline.Position.LEFT, new SequentialCommandGroup(
-                        new BlueWarehouseCommandL(drivetrain, intake, lift, armServos))
+                        new BlueWarehouseCommandL(drivetrain, intake, lift, shooterFlipper))
                 );
                 put(TeamMarkerPipeline.Position.MIDDLE, new SequentialCommandGroup(
-                        new BlueWarehouseCommandC(drivetrain, intake, lift, armServos))
+                        new BlueWarehouseCommandC(drivetrain, intake, lift, shooterFlipper))
                 );
                 put(TeamMarkerPipeline.Position.RIGHT, new SequentialCommandGroup(
-                        new BlueWarehouseCommandR(drivetrain, intake, lift, armServos))
+                        new BlueWarehouseCommandR(drivetrain, intake, lift, shooterFlipper))
                 );
             }}, vision::getCurrentPosition)
     );

@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.autons;
 
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.hardware.ServoEx;
@@ -10,19 +8,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.CRServo;
 
 import org.firstinspires.ftc.teamcode.autons.lmchamp.blue.Carousel.YBlueCarouselCommand;
-import org.firstinspires.ftc.teamcode.autons.lmchamp.blue.Warehouse.CBlueWarehouseCommand;
-import org.firstinspires.ftc.teamcode.autons.lmchamp.red.Carousel.YRedCarouselCommand;
-import org.firstinspires.ftc.teamcode.autons.lmchamp.red.Warehouse.CRedWarehouseCommand;
-import org.firstinspires.ftc.teamcode.commands.CapArmCommands.CapArmCarouselCommand;
-import org.firstinspires.ftc.teamcode.commands.DriveCommands.SplineCommand;
 import org.firstinspires.ftc.teamcode.driveTrain.MatchOpMode;
 import org.firstinspires.ftc.teamcode.driveTrain.SampleTankDrive;
-import org.firstinspires.ftc.teamcode.subsystems.ArmServos;
-import org.firstinspires.ftc.teamcode.subsystems.CapServos;
+import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
+import org.firstinspires.ftc.teamcode.subsystems.WobbleGoal;
 import org.firstinspires.ftc.teamcode.subsystems.Carousel;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.Lift;
+import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.SensorColor;
 
 @Autonomous(name = "TestAutonWithoutCam", group = "RED/BLUE")
@@ -45,10 +38,10 @@ private GamepadEx driverGamepad;
 // Subsystems
 private Drivetrain drivetrain;
 private Intake intake;
-private Lift lift;
-private ArmServos armServos;
+private Shooter lift;
+private ShooterFlipper shooterFlipper;
 private Carousel carousel;
-private CapServos capServos;
+private WobbleGoal wobbleGoal;
 private SensorColor sensorColor;
 
 @Override
@@ -56,10 +49,10 @@ public void robotInit() {
     drivetrain = new Drivetrain(new SampleTankDrive(hardwareMap), telemetry);
     drivetrain.init();
     intake = new Intake(intakeMotor, intakeServo, telemetry, hardwareMap);
-    lift = new Lift(liftMotor, liftMotor, telemetry, hardwareMap);
-    armServos = new ArmServos(armServo, dropServo, telemetry, hardwareMap);
+    lift = new Shooter(liftMotor, liftMotor, telemetry, hardwareMap);
+    shooterFlipper = new ShooterFlipper(armServo, dropServo, telemetry, hardwareMap);
     carousel = new Carousel(hardwareMap, telemetry);
-    capServos = new CapServos(clawServo, capArmServo, realCapArmServo, telemetry, hardwareMap);
+    wobbleGoal = new WobbleGoal(clawServo, capArmServo, realCapArmServo, telemetry, hardwareMap);
     liftMotor = new MotorEx(hardwareMap, "lift");
     sensorColor = new SensorColor(hardwareMap, telemetry, "colorSensor");
 }
@@ -67,7 +60,7 @@ public void robotInit() {
 public void matchStart()
     {
         schedule(new SequentialCommandGroup(
-                new YBlueCarouselCommand(drivetrain, intake, lift, armServos, carousel, sensorColor, capServos))
+                new YBlueCarouselCommand(drivetrain, intake, lift, shooterFlipper, carousel, sensorColor, wobbleGoal))
 //        new YRedCarouselCommand(drivetrain, intake, lift, armServos, carousel, sensorColor, capServos))
 
 //                //High

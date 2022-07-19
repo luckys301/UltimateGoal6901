@@ -16,12 +16,12 @@ import org.firstinspires.ftc.teamcode.Util;
 import org.firstinspires.ftc.teamcode.driveTrain.MatchOpMode;
 import org.firstinspires.ftc.teamcode.driveTrain.SampleTankDrive;
 import org.firstinspires.ftc.teamcode.pipelines.TeamMarkerPipeline;
-import org.firstinspires.ftc.teamcode.subsystems.ArmServos;
-import org.firstinspires.ftc.teamcode.subsystems.CapServos;
+import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
+import org.firstinspires.ftc.teamcode.subsystems.WobbleGoal;
 import org.firstinspires.ftc.teamcode.subsystems.Carousel;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.Lift;
+import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.SensorColor;
 import org.firstinspires.ftc.teamcode.subsystems.Vision;
 
@@ -49,22 +49,22 @@ public class CRedCarouselAuton extends MatchOpMode {
     // Subsystems
     private Drivetrain drivetrain;
     private Intake intake;
-    private Lift lift;
+    private Shooter lift;
     private Vision vision;
-    private ArmServos armServos;
+    private ShooterFlipper shooterFlipper;
     private Carousel carousel;
     private SensorColor sensorColor;
-    private CapServos capServos;
+    private WobbleGoal wobbleGoal;
 
     @Override
     public void robotInit() {
         drivetrain = new Drivetrain(new SampleTankDrive(hardwareMap), telemetry);
         drivetrain.init();
         intake = new Intake(intakeMotor, intakeServo, telemetry, hardwareMap);
-        lift = new Lift(liftMotor, liftMotor, telemetry, hardwareMap);
-        armServos = new ArmServos(armServo, dropServo, telemetry, hardwareMap);
+        lift = new Shooter(liftMotor, liftMotor, telemetry, hardwareMap);
+        shooterFlipper = new ShooterFlipper(armServo, dropServo, telemetry, hardwareMap);
         carousel = new Carousel(hardwareMap, telemetry);
-        capServos = new CapServos(clawServo, capArmServo, realCapArmServo, telemetry, hardwareMap);
+        wobbleGoal = new WobbleGoal(clawServo, capArmServo, realCapArmServo, telemetry, hardwareMap);
 
         sensorColor = new SensorColor(hardwareMap, telemetry, "colorSensor");
         vision = new Vision(hardwareMap, "Webcam 1", telemetry);
@@ -83,21 +83,21 @@ public class CRedCarouselAuton extends MatchOpMode {
                 new SelectCommand(new HashMap<Object, Command>() {{
                     put(TeamMarkerPipeline.Position.LEFT, new SequentialCommandGroup(
                             //Low
-                            new YRedCarouselCommand(drivetrain, intake, lift, armServos, carousel, sensorColor, capServos),
-                            new InstantCommand(capServos::autoLow),
-                            new YRedCarouselEndCommand(drivetrain, intake, lift, armServos, carousel, sensorColor, capServos)
+                            new YRedCarouselCommand(drivetrain, intake, lift, shooterFlipper, carousel, sensorColor, wobbleGoal),
+                            new InstantCommand(wobbleGoal::autoLow),
+                            new YRedCarouselEndCommand(drivetrain, intake, lift, shooterFlipper, carousel, sensorColor, wobbleGoal)
                     ));
                     put(TeamMarkerPipeline.Position.MIDDLE, new SequentialCommandGroup(
                             //Mid
-                            new YRedCarouselCommand(drivetrain, intake, lift, armServos, carousel, sensorColor, capServos),
-                            new InstantCommand(capServos::autoMid),
-                            new YRedCarouselEndCommand(drivetrain, intake, lift, armServos, carousel, sensorColor, capServos)
+                            new YRedCarouselCommand(drivetrain, intake, lift, shooterFlipper, carousel, sensorColor, wobbleGoal),
+                            new InstantCommand(wobbleGoal::autoMid),
+                            new YRedCarouselEndCommand(drivetrain, intake, lift, shooterFlipper, carousel, sensorColor, wobbleGoal)
                     ));
                     put(TeamMarkerPipeline.Position.RIGHT, new SequentialCommandGroup(
                             //High
-                            new YRedCarouselCommand(drivetrain, intake, lift, armServos, carousel, sensorColor, capServos),
-                            new InstantCommand(capServos::autoHigh),
-                            new YRedCarouselEndCommand(drivetrain, intake, lift, armServos, carousel, sensorColor, capServos)
+                            new YRedCarouselCommand(drivetrain, intake, lift, shooterFlipper, carousel, sensorColor, wobbleGoal),
+                            new InstantCommand(wobbleGoal::autoHigh),
+                            new YRedCarouselEndCommand(drivetrain, intake, lift, shooterFlipper, carousel, sensorColor, wobbleGoal)
                     ));
                 }}, vision::getCurrentPosition)
         );

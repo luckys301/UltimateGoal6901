@@ -12,12 +12,12 @@ import org.firstinspires.ftc.teamcode.commands.DriveCommands.DriveForwardCommand
 import org.firstinspires.ftc.teamcode.commands.DriveCommands.TurnCommand;
 import org.firstinspires.ftc.teamcode.driveTrain.MatchOpMode;
 import org.firstinspires.ftc.teamcode.driveTrain.SampleTankDrive;
-import org.firstinspires.ftc.teamcode.subsystems.ArmServos;
-import org.firstinspires.ftc.teamcode.subsystems.CapServos;
+import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
+import org.firstinspires.ftc.teamcode.subsystems.WobbleGoal;
 import org.firstinspires.ftc.teamcode.subsystems.Carousel;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.Lift;
+import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.SensorColor;
 @Disabled
 @Autonomous(name = "WindsorParkPRACTICE", group = "RED/BLUE")
@@ -40,10 +40,10 @@ private GamepadEx driverGamepad;
 // Subsystems
 private Drivetrain drivetrain;
 private Intake intake;
-private Lift lift;
-private ArmServos armServos;
+private Shooter lift;
+private ShooterFlipper shooterFlipper;
 private Carousel carousel;
-private CapServos capServos;
+private WobbleGoal wobbleGoal;
 private SensorColor sensorColor;
 
 @Override
@@ -51,10 +51,10 @@ public void robotInit() {
     drivetrain = new Drivetrain(new SampleTankDrive(hardwareMap), telemetry);
     drivetrain.init();
     intake = new Intake(intakeMotor, intakeServo, telemetry, hardwareMap);
-    lift = new Lift(liftMotor, liftMotor, telemetry, hardwareMap);
-    armServos = new ArmServos(armServo, dropServo, telemetry, hardwareMap);
+    lift = new Shooter(liftMotor, liftMotor, telemetry, hardwareMap);
+    shooterFlipper = new ShooterFlipper(armServo, dropServo, telemetry, hardwareMap);
     carousel = new Carousel(hardwareMap, telemetry);
-    capServos = new CapServos(clawServo, capArmServo, realCapArmServo, telemetry, hardwareMap);
+    wobbleGoal = new WobbleGoal(clawServo, capArmServo, realCapArmServo, telemetry, hardwareMap);
     liftMotor = new MotorEx(hardwareMap, "lift");
     sensorColor = new SensorColor(hardwareMap, telemetry, "colorSensor");
 }

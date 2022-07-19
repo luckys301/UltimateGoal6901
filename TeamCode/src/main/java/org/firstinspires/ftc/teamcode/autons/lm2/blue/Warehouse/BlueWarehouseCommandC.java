@@ -11,33 +11,33 @@ import org.firstinspires.ftc.teamcode.commands.DriveCommands.DriveForwardCommand
 import org.firstinspires.ftc.teamcode.commands.DriveCommands.KindaSlowDriveForwardCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveCommands.TurnCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveCommands.TurnToCommand;
-import org.firstinspires.ftc.teamcode.subsystems.ArmServos;
+import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.Lift;
+import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 
 public class BlueWarehouseCommandC extends SequentialCommandGroup {
-    public BlueWarehouseCommandC(Drivetrain drivetrain, Intake intake, Lift lift, ArmServos armServos) {
+    public BlueWarehouseCommandC(Drivetrain drivetrain, Intake intake, Shooter lift, ShooterFlipper shooterFlipper) {
         //declare variables here
 
 
         addCommands(
                 //Setup
-                new InstantCommand(armServos::armUp,armServos),
+                new InstantCommand(shooterFlipper::armUp, shooterFlipper),
 
                 new DriveForwardCommand(drivetrain, -24),
                 new TurnToCommand(drivetrain, 298),
-                new LiftMidCommand(lift, armServos),
+                new LiftMidCommand(lift, shooterFlipper),
                 new WaitCommand(1000),
 
                 new KindaSlowDriveForwardCommand(drivetrain, -4.5),
-                new DropFreightCommand(armServos, drivetrain),
+                new DropFreightCommand(shooterFlipper, drivetrain),
                 new KindaSlowDriveForwardCommand(drivetrain, -0.5),
                 new WaitCommand(1000),
-                new InstantCommand(armServos::armUp,armServos),
+                new InstantCommand(shooterFlipper::armUp, shooterFlipper),
 
                 new TurnToCommand(drivetrain, 0, true),
-                new AutoLiftResetCommand(armServos, lift),
+                new AutoLiftResetCommand(shooterFlipper, lift),
                 new DriveForwardCommand(drivetrain, 22),
                 new TurnCommand(drivetrain,90),
                 new DriveForwardCommand(drivetrain, -40)

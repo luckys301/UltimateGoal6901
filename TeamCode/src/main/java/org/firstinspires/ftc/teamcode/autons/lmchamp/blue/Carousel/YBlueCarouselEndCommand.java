@@ -6,16 +6,16 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 import org.firstinspires.ftc.teamcode.commands.CapArmCommands.CapArmCarouselCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveCommands.DriveForwardCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveCommands.TurnToCommand;
-import org.firstinspires.ftc.teamcode.subsystems.ArmServos;
-import org.firstinspires.ftc.teamcode.subsystems.CapServos;
+import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
+import org.firstinspires.ftc.teamcode.subsystems.WobbleGoal;
 import org.firstinspires.ftc.teamcode.subsystems.Carousel;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.Lift;
+import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.SensorColor;
 
 public class YBlueCarouselEndCommand extends SequentialCommandGroup {
-    public YBlueCarouselEndCommand(Drivetrain drivetrain, Intake intake, Lift lift, ArmServos armServos, Carousel carousel, SensorColor sensorColor, CapServos capServos) {
+    public YBlueCarouselEndCommand(Drivetrain drivetrain, Intake intake, Shooter lift, ShooterFlipper shooterFlipper, Carousel carousel, SensorColor sensorColor, WobbleGoal wobbleGoal) {
 
         addCommands(
 
@@ -23,7 +23,7 @@ public class YBlueCarouselEndCommand extends SequentialCommandGroup {
                 new WaitCommand(150),
                 new DriveForwardCommand(drivetrain, 24.2),
                 new TurnToCommand(drivetrain, 113),
-                new CapArmCarouselCommand(capServos, drivetrain),
+                new CapArmCarouselCommand(wobbleGoal, drivetrain),
 
                 new TurnToCommand(drivetrain, 270),
                 new DriveForwardCommand(drivetrain, 16.5),

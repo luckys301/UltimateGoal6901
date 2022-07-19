@@ -20,12 +20,12 @@ import org.firstinspires.ftc.teamcode.commands.LiftCommands.LiftResetCommandT;
 import org.firstinspires.ftc.teamcode.commands.HalfDropCommandT;
 import org.firstinspires.ftc.teamcode.driveTrain.MatchOpMode;
 import org.firstinspires.ftc.teamcode.driveTrain.SampleTankDrive;
-import org.firstinspires.ftc.teamcode.subsystems.ArmServos;
-import org.firstinspires.ftc.teamcode.subsystems.CapServos;
+import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
+import org.firstinspires.ftc.teamcode.subsystems.WobbleGoal;
 import org.firstinspires.ftc.teamcode.subsystems.Carousel;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.Lift;
+import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.SensorColor;
 
 @Config
@@ -49,11 +49,11 @@ public class BlueTeleOp extends MatchOpMode {
     // Subsystems
     private SensorColor sensorColor;
     private Drivetrain drivetrain;
-    private Lift lift;
+    private Shooter lift;
     private Intake intake;
     private Carousel carousel;
-    private ArmServos armServos;
-    private CapServos capServos;
+    private ShooterFlipper shooterFlipper;
+    private WobbleGoal wobbleGoal;
 
     // Buttons
     private Button intakeTrigger, outtakeTrigger;
@@ -78,13 +78,13 @@ public class BlueTeleOp extends MatchOpMode {
         //Subsystems
         sensorColor = new SensorColor(hardwareMap, telemetry, "colorSensor");
         drivetrain = new Drivetrain(new SampleTankDrive(hardwareMap), telemetry);
-        lift = new Lift(liftMotor, liftMotor2, telemetry, hardwareMap);
+        lift = new Shooter(liftMotor, liftMotor2, telemetry, hardwareMap);
         intake = new Intake(intakeMotor, intakeServo, telemetry, hardwareMap);
         carousel = new Carousel(hardwareMap, telemetry);
-        armServos = new ArmServos(armServo, dropServo, telemetry, hardwareMap);
-        capServos = new CapServos(clawServo, capArmServo, realCapArmServo, telemetry, hardwareMap);
+        shooterFlipper = new ShooterFlipper(armServo, dropServo, telemetry, hardwareMap);
+        wobbleGoal = new WobbleGoal(clawServo, capArmServo, realCapArmServo, telemetry, hardwareMap);
 
-        intake.setDefaultCommand(new ColorIntakeCommand(intake, sensorColor, armServos));   //Color Sensor default command
+        intake.setDefaultCommand(new ColorIntakeCommand(intake, sensorColor, shooterFlipper));   //Color Sensor default command
         drivetrain.setDefaultCommand(new DefaultDriveCommand(drivetrain, driverGamepad));   //Drivetrain default command
         drivetrain.init();
     }
@@ -116,9 +116,9 @@ public class BlueTeleOp extends MatchOpMode {
                 .whenPressed(lift::reset);
 
         resetEveryThingButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.DPAD_DOWN))  //Resets Lift/Servos
-                .whenPressed(new LiftResetCommandT(armServos, lift))
+                .whenPressed(new LiftResetCommandT(shooterFlipper, lift))
                 .whenPressed(new InstantCommand(lift::liftResting, lift))
-                .whenPressed(new InstantCommand(capServos::clawOpen));
+                .whenPressed(new InstantCommand(wobbleGoal::clawOpen));
 
         liftLowButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.X)   //Lift Low
                 .whenPressed(lift::liftLow));
@@ -128,11 +128,11 @@ public class BlueTeleOp extends MatchOpMode {
                 .whenPressed(lift::liftSharedHigh));
 
         dropFreightButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.LEFT_BUMPER))    //Outtake Freight
-                .whenPressed(new TeleOpDropFreightCommand(armServos,drivetrain));
+                .whenPressed(new TeleOpDropFreightCommand(shooterFlipper,drivetrain));
         dropFreightButton = (new GamepadButton(driverGamepad, GamepadKeys.Button.LEFT_BUMPER))    //Outtake Freight Driver
-                .whenPressed(new TeleOpDropFreightCommand(armServos,drivetrain));
+                .whenPressed(new TeleOpDropFreightCommand(shooterFlipper,drivetrain));
         upBoxButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.A))    //Move Lift Box Up
-                .whenPressed(new HalfDropCommandT(armServos));
+                .whenPressed(new HalfDropCommandT(shooterFlipper));
 
 
         carouselLeftTrigger = (new GamepadTrigger(operatorGamepad, GamepadKeys.Trigger.LEFT_TRIGGER)   //Carousel Left
@@ -145,25 +145,25 @@ public class BlueTeleOp extends MatchOpMode {
 
 
         intakeClawUpButton = (new GamepadButton(driverGamepad, GamepadKeys.Button.DPAD_UP)          //Up Intake Claw
-                .whileHeld(armServos::boxUp));
+                .whileHeld(shooterFlipper::boxUp));
         intakeClawDownButton = (new GamepadButton(driverGamepad, GamepadKeys.Button.DPAD_DOWN)      //Down Intake Claw
-                .whileHeld(armServos::boxDown));
+                .whileHeld(shooterFlipper::boxDown));
 
 
 
         outRealCapHomeTrigger = (new GamepadButton(driverGamepad, GamepadKeys.Button.DPAD_RIGHT)    //Out Cap Servo
-                .whileHeld(capServos::addToCap));
+                .whileHeld(wobbleGoal::addToCap));
         inRealCapHomeTrigger = (new GamepadButton(driverGamepad, GamepadKeys.Button.DPAD_LEFT)      //In Cap Servo
-                .whenPressed(capServos::subtractToCap));
+                .whenPressed(wobbleGoal::subtractToCap));
 
         realClawHomeButton = (new GamepadButton(driverGamepad, GamepadKeys.Button.Y)    //Home
-                .whenPressed(capServos::realCapHome));
+                .whenPressed(wobbleGoal::realCapHome));
         realClawMidButton = (new GamepadButton(driverGamepad, GamepadKeys.Button.X)     //Mid
-                .whenPressed(capServos::realCapMid));
+                .whenPressed(wobbleGoal::realCapMid));
         realClawMidButton = (new GamepadButton(driverGamepad, GamepadKeys.Button.B)     //Mid
-                .whenPressed(capServos::realCapMid));
+                .whenPressed(wobbleGoal::realCapMid));
         realClawLowButton = (new GamepadButton(driverGamepad, GamepadKeys.Button.A)     //Low
-                .whenPressed(capServos::realCapLow));
+                .whenPressed(wobbleGoal::realCapLow));
     }
 
     @Override

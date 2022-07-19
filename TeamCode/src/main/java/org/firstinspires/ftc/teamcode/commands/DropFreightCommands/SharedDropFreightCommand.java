@@ -4,17 +4,17 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 
 import org.firstinspires.ftc.teamcode.commands.DriveCommands.DriveForwardCommand;
-import org.firstinspires.ftc.teamcode.subsystems.ArmServos;
+import org.firstinspires.ftc.teamcode.subsystems.ShooterFlipper;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 
 public class SharedDropFreightCommand extends SequentialCommandGroup {
-    private ArmServos armServos;
+    private ShooterFlipper shooterFlipper;
 
-    public SharedDropFreightCommand(ArmServos armServos, Drivetrain drivetrain){
-        addRequirements(armServos, drivetrain);
+    public SharedDropFreightCommand(ShooterFlipper shooterFlipper, Drivetrain drivetrain){
+        addRequirements(shooterFlipper, drivetrain);
         addCommands(
-                new InstantCommand(armServos::armShared),
-                new InstantCommand(armServos::boxPush),
+                new InstantCommand(shooterFlipper::armShared),
+                new InstantCommand(shooterFlipper::boxPush),
                 new DriveForwardCommand(drivetrain, 4)
         );
     }

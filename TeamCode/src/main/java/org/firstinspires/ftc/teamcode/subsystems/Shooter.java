@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Util;
 import java.util.logging.Level;
 
 @Config
-public class Lift extends SubsystemBase {
+public class Shooter extends SubsystemBase {
     private Telemetry telemetry;
     private MotorEx liftMotor;
     private MotorEx liftMotor2;
@@ -38,16 +38,10 @@ public class Lift extends SubsystemBase {
     public static int AUTO_HIGH_POSITION = -1600;
     public static int HIGH_POSITION = -1550;
 
-//    public static int CAP_POSITION = 0;
-//    public static int RESTING_POSITION2 = -100;
-//    public static int LOW_POSITION2 = 350;
-//    public static int MID_POSITION2 = 700;
-//    public static int HIGH_POSITION2 = 1600;
-//    public static int CAP_POSITION2 = 0;
 
     private int liftPosition = 0;
 
-    public Lift(MotorEx liftMotor, MotorEx liftMotor2, Telemetry tl, HardwareMap hw) {
+    public Shooter(MotorEx liftMotor, MotorEx liftMotor2, Telemetry tl, HardwareMap hw) {
         this.liftMotor = liftMotor;
         this.liftMotor = new MotorEx(hw, "lift");
 
