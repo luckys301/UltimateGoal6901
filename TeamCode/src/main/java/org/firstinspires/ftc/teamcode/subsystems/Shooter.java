@@ -211,4 +211,12 @@ public class Shooter extends SubsystemBase {
         liftMotor.resetEncoder();
         liftMotor2.resetEncoder();
     }
+
+    public void setSpeed(double speed){
+        liftMotor.set(speed);
+    }
+
+    public void halfSpeed(){
+        setSpeed(0.5);
+    }
 }

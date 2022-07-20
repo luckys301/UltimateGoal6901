@@ -15,8 +15,6 @@ public class IntakeCommand extends SequentialCommandGroup {
         addRequirements(lift, intake, shooterFlipper);
         addCommands(
                 new InstantCommand(intake::intake, intake),
-                new InstantCommand(intake::stop),
-                new InstantCommand(intake::outtake, intake),
                 new WaitCommand(500),
                 new InstantCommand(intake::stop, intake)
 

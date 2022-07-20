@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.TeleOps;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -14,6 +13,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 
 import org.firstinspires.ftc.teamcode.commands.DriveCommands.DefaultDriveCommand;
 import org.firstinspires.ftc.teamcode.commands.DriveCommands.SharedSlowDriveCommand;
+import org.firstinspires.ftc.teamcode.commands.FlipperInOutCommand;
 import org.firstinspires.ftc.teamcode.commands.IntakeCommands.ColorIntakeCommand;
 import org.firstinspires.ftc.teamcode.driveTrain.MatchOpMode;
 import org.firstinspires.ftc.teamcode.driveTrain.SampleTankDrive;
@@ -46,7 +46,7 @@ public class BlueTeleOp extends MatchOpMode {
     // Subsystems
     private SensorColor sensorColor;
     private Drivetrain drivetrain;
-    private Shooter lift;
+    private Shooter shooter;
     private Intake intake;
     private Camera camera;
     private ShooterFlipper shooterFlipper;
@@ -55,17 +55,10 @@ public class BlueTeleOp extends MatchOpMode {
     // Buttons
     private Button intakeTrigger, outtakeTrigger;
     private Button slowModeBumper;
-    public Button liftManualUpButton, liftManualDownButton;
-    public Button liftLowButton, liftMidButton, liftHighButton;
-    public Button carouselRightTrigger, carouselLeftTrigger;
-    public Button resetEveryThingButton;
-    public Button dropFreightButton, upBoxButton;
-    public Button intakeClawUpButton;
-    public Button intakeClawDownButton;
-    public Button outRealCapHomeTrigger;
-    public Button inRealCapHomeTrigger;
-    public Button realClawHomeButton, realClawMidButton, realClawLowButton;
-    public Button slideResetButton;
+    private Button liftLowButton, liftMidButton, liftHighButton;
+    private Button slideResetButton;
+    private Button startShooterButton;
+    private Button flipperInOutButton;
 
     @Override
     public void robotInit() {
@@ -75,7 +68,7 @@ public class BlueTeleOp extends MatchOpMode {
         //Subsystems
         sensorColor = new SensorColor(hardwareMap, telemetry, "colorSensor");
         drivetrain = new Drivetrain(new SampleTankDrive(hardwareMap), telemetry);
-        lift = new Shooter(liftMotor, liftMotor2, telemetry, hardwareMap);
+        shooter = new Shooter(liftMotor, liftMotor2, telemetry, hardwareMap);
         intake = new Intake(intakeMotor, intakeServo, telemetry, hardwareMap);
         camera = new Camera(hardwareMap, telemetry);
         shooterFlipper = new ShooterFlipper(armServo, dropServo, telemetry, hardwareMap);
@@ -101,66 +94,20 @@ public class BlueTeleOp extends MatchOpMode {
                 .whenReleased(intake::stop));
 
 
+//        slideResetButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.BACK))    //Reset encoders (hopefully)
+//                .whenPressed(shooter::reset);
 
-//        liftManualUpButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.DPAD_RIGHT)     //Manual Lift Up
-//                .whenPressed(lift::liftManual)
-//                .whenReleased(lift::stopMotor));
-//        liftManualDownButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.DPAD_LEFT)    //Manual Lift Down
-//                .whenPressed(lift::lowerLiftManual)
-//                .whenReleased(lift::stopMotor));
-
-        slideResetButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.BACK))    //Reset encoders (hopefully)
-                .whenPressed(lift::reset);
-
-        resetEveryThingButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.DPAD_DOWN))  //Resets Lift/Servos
-//                .whenPressed(new LiftResetCommandT(shooterFlipper, lift))
-                .whenPressed(new InstantCommand(lift::liftResting, lift));
-//                .whenPressed(new InstantCommand(wobbleGoal::clawOpen));
+        startShooterButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.X)   //Start Shooter
+                .whenPressed(shooter::halfSpeed));
+        flipperInOutButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.B)   //Start Shooter
+                .whenPressed(new FlipperInOutCommand(shooterFlipper)));
 
         liftLowButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.X)   //Lift Low
-                .whenPressed(lift::liftLow));
+                .whenPressed(shooter::liftLow));
         liftMidButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.B)   //Lift Mid
-                .whenPressed(lift::liftMid));
+                .whenPressed(shooter::liftMid));
         liftHighButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.Y)  //Lift Shared High
-                .whenPressed(lift::liftSharedHigh));
-
-//        dropFreightButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.LEFT_BUMPER))    //Outtake Freight
-//                .whenPressed(new TeleOpDropFreightCommand(shooterFlipper,drivetrain));
-//        dropFreightButton = (new GamepadButton(driverGamepad, GamepadKeys.Button.LEFT_BUMPER))    //Outtake Freight Driver
-//                .whenPressed(new TeleOpDropFreightCommand(shooterFlipper,drivetrain));
-//        upBoxButton = (new GamepadButton(operatorGamepad, GamepadKeys.Button.A))    //Move Lift Box Up
-//                .whenPressed(new HalfDropCommandT(shooterFlipper));
-
-
-//        carouselLeftTrigger = (new GamepadTrigger(operatorGamepad, GamepadKeys.Trigger.LEFT_TRIGGER)   //Carousel Left
-//                .whileHeld(camera::carouselLeft)
-//                .whenReleased(camera::stop));
-//        carouselRightTrigger = (new GamepadTrigger(operatorGamepad, GamepadKeys.Trigger.RIGHT_TRIGGER)   //Carousel Right
-//                .whileHeld(camera::carouselRight)
-//                .whenReleased(camera::stop));
-
-
-
-//        intakeClawUpButton = (new GamepadButton(driverGamepad, GamepadKeys.Button.DPAD_UP)          //Up Intake Claw
-//                .whileHeld(shooterFlipper::boxUp));
-//        intakeClawDownButton = (new GamepadButton(driverGamepad, GamepadKeys.Button.DPAD_DOWN)      //Down Intake Claw
-//                .whileHeld(shooterFlipper::boxDown));
-//
-//
-//
-//        outRealCapHomeTrigger = (new GamepadButton(driverGamepad, GamepadKeys.Button.DPAD_RIGHT)    //Out Cap Servo
-//                .whileHeld(wobbleGoal::addToCap));
-//        inRealCapHomeTrigger = (new GamepadButton(driverGamepad, GamepadKeys.Button.DPAD_LEFT)      //In Cap Servo
-//                .whenPressed(wobbleGoal::subtractToCap));
-
-//        realClawHomeButton = (new GamepadButton(driverGamepad, GamepadKeys.Button.Y)    //Home
-//                .whenPressed(wobbleGoal::realCapHome));
-//        realClawMidButton = (new GamepadButton(driverGamepad, GamepadKeys.Button.X)     //Mid
-//                .whenPressed(wobbleGoal::realCapMid));
-//        realClawMidButton = (new GamepadButton(driverGamepad, GamepadKeys.Button.B)     //Mid
-//                .whenPressed(wobbleGoal::realCapMid));
-//        realClawLowButton = (new GamepadButton(driverGamepad, GamepadKeys.Button.A)     //Low
-//                .whenPressed(wobbleGoal::realCapLow));
+                .whenPressed(shooter::liftSharedHigh));
     }
 
     @Override

@@ -21,8 +21,8 @@ public class Camera extends SubsystemBase {
 
     public Camera(HardwareMap hw, Telemetry tl) {
         this.camServo = new SimpleServo(hw,"camServo", 0, 270);
-
         this.telemetry = tl;
+        camServo.setPosition(CAM_POS_ONE);
     }
 
 
